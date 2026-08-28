@@ -1,13 +1,16 @@
 import pygame
 import sys
 
-from desk.furnace_desk import furnace
 from interval_time import interval
 from colors import *
 from debug import debug_menu
-from desk.document import documents
 from display import screen, screen_width, screen_height
 from clickable import clickables
+from floating_window import floating_windows
+
+from desk.document import documents
+from desk.furnace_desk import furnace
+from desk.desk_desk import desk_physical
 
 class Desk:
     def __init__(self, display, game_state_manager):
@@ -44,12 +47,10 @@ class Desk:
 
             screen.fill(WHITE)
 
-            pygame.draw.rect(screen, PURPLE, pygame.Rect(0, 0, 400, screen_height))
-            pygame.draw.rect(screen, RED, pygame.Rect(400, 0, 1100, screen_height))
-
             furnace.draw(events, mouse)
 
-            for i in range(len(documents)): documents[i].draw(events, mouse)
+            desk_physical.draw()
+            for floating_window in reversed(floating_windows): floating_window.draw(events, mouse)
 
             debug_menu.draw(events, f"FPS: {self.fps}")
 

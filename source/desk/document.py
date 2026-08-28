@@ -1,9 +1,10 @@
 import pygame
 import random
 
-from colors import WHITE
+from colors import *
 from display import screen
-from floating_window import FloatingWindow
+from floating_window import FloatingWindow, floating_windows
+from settings import screen_width, screen_height
 from shadow import Shadow
 from fonts import font
 from colors import *
@@ -56,25 +57,45 @@ _DICTIONARY_OF_ALL_VIRTUES = {
 
 class Document:
     def __init__(self):
+        self.name = "Ron Random"
+
+        #info # Sins and virtues #
+
         while True:
-            max_sins_value = random.randint(10, 200) #todo # Add minus values for better chances #
+            max_virtues_value = -random.randint(-10, 100)
+            max_sins_value = random.randint(-10, 200 + max_virtues_value // 2)
+
             self.sins = {}
             available_sins = _DICTIONARY_OF_ALL_SINS.copy()
-            while max_sins_value > sum(self.sins.values()):
+            try: sum_of_sins = sum(self.sins.values())
+            except ValueError: sum_of_sins = 0
+            while max_sins_value > sum_of_sins:
+                sum_of_sins = sum(self.sins.values())
                 random_sin = random.choice(list(available_sins.items()))
                 available_sins.pop(random_sin[0])
                 self.sins[random_sin[0]] = random_sin[1]
 
-            max_virtues_value = -random.randint(10, 150)
             self.virtues = {}
             available_virtues = _DICTIONARY_OF_ALL_VIRTUES.copy()
-            while max_virtues_value < sum(self.virtues.values()):
+            try: sum_of_virtues = sum(self.virtues.values())
+            except ValueError: sum_of_virtues = 0
+            while max_virtues_value < sum_of_virtues:
+                sum_of_virtues = sum(self.virtues.values())
                 random_virtue = random.choice(list(available_virtues.items()))
                 available_virtues.pop(random_virtue[0])
                 self.virtues[random_virtue[0]] = random_virtue[1]
 
-            self.sum_of_sins_and_virtues = sum(self.sins.values()) + sum(self.virtues.values())
+            try: sum_of_sins = sum(self.sins.values())
+            except ValueError: sum_of_sins = 0
+            try: sum_of_virtues = sum(self.virtues.values())
+            except ValueError: sum_of_virtues = 0
+
+            self.sum_of_sins_and_virtues = sum_of_sins + sum_of_virtues
             if self.sum_of_sins_and_virtues != 0: break
+
+        additional_height = 0
+        if sum_of_sins != 0: additional_height += 44 + len(self.sins) * 22
+        if sum_of_virtues != 0: additional_height += 44 + len(self.virtues) * 22
 
         class DocumentDraw(FloatingWindow):
             def __init__(self, parent, xy, width, height):
@@ -82,18 +103,32 @@ class Document:
                 self._parent = parent
 
                 self._surface.fill(WHITE)
-                y = 0
-                for sin, temperature in self._parent.sins.items():
-                    self._surface.blit(font.departure_mono_size_22.render(f"{sin} (+{temperature}°C)", False, RED), (0, y))
-                    y += 22
+                pygame.draw.rect(self._surface, YELLOW, pygame.Rect(0, 0, self.width, self.height), 1)
+                text_xy = pygame.Vector2(4, 0)
 
-                y += 22
-                for virtue, temperature in self._parent.virtues.items():
-                    self._surface.blit(font.departure_mono_size_22.render(f"{virtue} ({temperature}°C)", False, RED), (0, y))
-                    y += 22
+                self._surface.blit(font.departure_mono_size_22.render(self._parent.name, False, RED), text_xy)
+                self._surface.blit(font.departure_mono_size_22.render(f"{self._parent.sum_of_sins_and_virtues}", False, RED), (200, text_xy.y))
+                text_xy.y += 22
 
-                y += 22
-                self._surface.blit(font.departure_mono_size_22.render(f"DEBUG: ({self._parent.sum_of_sins_and_virtues}°C)", False, RED), (0, y))
+                if len(self._parent.sins) != 0:
+                    text_xy.y += 22
+                    self._surface.blit(font.departure_mono_size_22.render("Sins:", False, RED), text_xy)
+                    text_xy.y += 22
+                    for sin, temperature in self._parent.sins.items():
+                        self._surface.blit(font.departure_mono_size_22.render(f" - {sin} (+{temperature}°C)", False, RED), text_xy)
+                        text_xy.y += 22
+
+                if len(self._parent.virtues) != 0:
+                    text_xy.y += 22
+                    self._surface.blit(font.departure_mono_size_22.render("Virtues:", False, RED), text_xy)
+                    text_xy.y += 22
+                    for virtue, temperature in self._parent.virtues.items():
+                        self._surface.blit(font.departure_mono_size_22.render(f" - {virtue} ({temperature}°C)", False, RED), text_xy)
+                        text_xy.y += 22
+                text_xy.y -= 22
+
+                text_xy.y += 44
+                self._surface.blit(font.departure_mono_size_22.render(f"DEBUG: {self._parent.sum_of_sins_and_virtues}°C", False, RED), text_xy)
 
                 self._shadow = Shadow(self._surface)
 
@@ -105,12 +140,22 @@ class Document:
                 screen.blit(self._shadow.surface, (self.xy.x - self._shadow.radius, self.xy.y - self._shadow.radius))
                 screen.blit(self._surface, self.xy)
 
-        self.look = DocumentDraw(self, None, 300, 300)
+        self.look = DocumentDraw(self, pygame.Vector2((screen_width - 451 - 1000) + 5, 5), 450, 28 + additional_height)
 
     def draw(self, events, mouse) -> None: self.look.draw(events, mouse)
 
-documents = [
-    Document(),
-    Document(),
-    Document()
-]
+documents = []
+for i in range(25): documents.append(Document())
+_max_height_of_documents = max(document.look.height for document in documents)
+documents.sort(key = lambda document: document.look.height, reverse = False)
+for document in documents:
+    random_additional_xy = pygame.Vector2(random.randint(1, 6), random.randint(1, 6))
+
+    document.look.xy.x += random_additional_xy.x
+    document.look.background.x += random_additional_xy.x
+
+    additional_y = _max_height_of_documents - document.look.height + random_additional_xy.y
+    document.look.xy.y += additional_y
+    document.look.background.y += additional_y
+
+    floating_windows.append(document.look)

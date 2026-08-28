@@ -25,4 +25,4 @@ class Shadow:
         pil_image = Image.frombytes("RGBA", size_in_px, surface_bytes)
         pil_image = pil_image.filter(ImageFilter.GaussianBlur(self._size_of_shadow))
 
-        self.surface = pygame.image.frombytes(pil_image.tobytes(), size_in_px, "RGBA")
+        self.surface = pygame.image.frombytes(pil_image.tobytes(), size_in_px, "RGBA").convert_alpha()
