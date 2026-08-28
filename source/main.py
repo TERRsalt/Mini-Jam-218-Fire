@@ -1,0 +1,1 @@
+print("Hello, Mini Jam 218: Fire!")
