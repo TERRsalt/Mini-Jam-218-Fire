@@ -3,6 +3,7 @@ import sys
 
 from colors import *
 from debug import debug_menu
+from desk.document import test_document
 from display import screen, screen_width, screen_height
 from clickable import clickables
 
@@ -42,8 +43,9 @@ class Desk:
             screen.fill(WHITE)
 
             pygame.draw.rect(screen, PURPLE, pygame.Rect(0, 0, 400, screen_height))
-
             pygame.draw.rect(screen, RED, pygame.Rect(400, 0, 1100, screen_height))
+
+            test_document.draw(events, mouse)
 
             debug_menu.draw(events, f"FPS: {self.fps}")
 
