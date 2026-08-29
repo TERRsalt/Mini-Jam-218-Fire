@@ -6,8 +6,6 @@ from colors import *
 from interval_time import interval
 from fonts import font
 
-from desk.mini_desk import mini_desk_instance
-
 class Timer:
     def __init__(self):
         self.minutes = 5

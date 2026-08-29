@@ -1,6 +1,6 @@
 import pygame
 
-_previous_times = {"furnace": 0, "timer": 0}
+_previous_times = {"furnace": 0, "timer": 0, "dialog": 0}
 def interval(interval_ms, key) -> bool:
     current_time = pygame.time.get_ticks()
 

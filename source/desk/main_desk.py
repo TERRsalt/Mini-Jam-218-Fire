@@ -1,6 +1,7 @@
 import pygame
 import sys
 
+from desk.dialog import dialog_1
 from desk.heaven_desk import heaven
 from desk.mini_desk import mini_desk_instance
 from desk.timer import timer_instance
@@ -56,7 +57,11 @@ class Desk:
             world_instance.draw()
             mini_desk_instance.draw()
             timer_instance.draw()
+
+            dialog_1.draw(events)
+
             desk_instance.draw()
+
             for floating_window in reversed(floating_windows.copy()): floating_window.draw(events, mouse)
 
             debug_menu.draw(events, f"FPS: {self.fps}")

@@ -57,6 +57,8 @@ _DICTIONARY_OF_ALL_VIRTUES = {
     "Honesty": -5
 }
 
+_DOCUMENT_TOP = pygame.image.load("assets/gfx/document_top.png").convert_alpha()
+
 class Document:
     def __init__(self):
         self.name = "Ron Random"
@@ -104,9 +106,12 @@ class Document:
                 super().__init__(xy, width, height)
                 self._parent = parent
 
-                self._surface.fill(WHITE)
-                pygame.draw.rect(self._surface, YELLOW, pygame.Rect(0, 0, self.width, self.height), 1)
-                text_xy = pygame.Vector2(4, 0)
+                pygame.draw.rect(self._surface, WHITE, pygame.Rect(0, 25, self.width, self.height - 25))
+                pygame.draw.rect(self._surface, YELLOW, pygame.Rect(0, 25, self.width, self.height - 25), 1)
+                pygame.draw.rect(self._surface, WHITE, pygame.Rect(1, 25, self.width - 2, 1))
+                self._surface.blit(_DOCUMENT_TOP, (0, 0))
+
+                text_xy = pygame.Vector2(4, 25)
 
                 self._surface.blit(font.departure_mono_size_22.render(self._parent.name, False, RED), text_xy)
                 self._surface.blit(font.departure_mono_size_22.render(f"{self._parent.sum_of_sins_and_virtues}", False, RED), (200, text_xy.y))
@@ -129,9 +134,6 @@ class Document:
                         text_xy.y += 22
                 text_xy.y -= 22
 
-                text_xy.y += 44
-                self._surface.blit(font.departure_mono_size_22.render(f"DEBUG: {self._parent.sum_of_sins_and_virtues}°C", False, RED), text_xy)
-
                 self._shadow = Shadow(self._surface, 2)
 
             def draw(self, events, mouse) -> None:
@@ -146,8 +148,8 @@ class Document:
                 screen.blit(self._shadow.surface, (self.xy.x - self._shadow.radius, self.xy.y - self._shadow.radius))
                 screen.blit(self._surface, self.xy)
 
-        height = 28 + additional_height
-        self.look = DocumentDraw(self, pygame.Vector2(7, screen_height - 7 - height), 450, height)
+        height_of_look = 28 + additional_height + 25
+        self.look = DocumentDraw(self, pygame.Vector2(7, screen_height - 7 - height_of_look), 450, height_of_look)
 
     def draw(self, events, mouse) -> None: self.look.draw(events, mouse)
 
