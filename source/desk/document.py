@@ -2,6 +2,7 @@ import pygame
 import random
 
 from colors import *
+from desk.mini_desk import mini_desk_instance
 from display import screen
 from floating_window import FloatingWindow, floating_windows
 from settings import screen_width, screen_height
@@ -130,7 +131,7 @@ class Document:
                 text_xy.y += 44
                 self._surface.blit(font.departure_mono_size_22.render(f"DEBUG: {self._parent.sum_of_sins_and_virtues}°C", False, RED), text_xy)
 
-                self._shadow = Shadow(self._surface)
+                self._shadow = Shadow(self._surface, 2)
 
             def draw(self, events, mouse) -> None:
                 if not self.should_draw: return
@@ -140,7 +141,8 @@ class Document:
                 screen.blit(self._shadow.surface, (self.xy.x - self._shadow.radius, self.xy.y - self._shadow.radius))
                 screen.blit(self._surface, self.xy)
 
-        self.look = DocumentDraw(self, pygame.Vector2((screen_width - 451 - 1000) + 5, 5), 450, 28 + additional_height)
+        height = 28 + additional_height
+        self.look = DocumentDraw(self, pygame.Vector2(7, screen_height - 7 - height), 450, height)
 
     def draw(self, events, mouse) -> None: self.look.draw(events, mouse)
 
@@ -149,13 +151,12 @@ for i in range(25): documents.append(Document())
 _max_height_of_documents = max(document.look.height for document in documents)
 documents.sort(key = lambda document: document.look.height, reverse = False)
 for document in documents:
-    random_additional_xy = pygame.Vector2(random.randint(1, 6), random.randint(1, 6))
+    random_additional_xy = pygame.Vector2(random.randint(1, 6), random.randint(-6, 0))
 
     document.look.xy.x += random_additional_xy.x
     document.look.background.x += random_additional_xy.x
 
-    additional_y = _max_height_of_documents - document.look.height + random_additional_xy.y
-    document.look.xy.y += additional_y
-    document.look.background.y += additional_y
+    document.look.xy.y += random_additional_xy.y
+    document.look.background.y += random_additional_xy.y
 
     floating_windows.append(document.look)

@@ -36,7 +36,7 @@ class FloatingWindow:
     def _controls(self, events, mouse) -> None:
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN and self.background.collidepoint(mouse):
-                colliding = [fw for fw in floating_windows if fw.background.collidepoint(mouse)]
+                colliding = [floating_window for floating_window in floating_windows if floating_window.background.collidepoint(mouse)]
                 if colliding and colliding[0] == self and dragging.is_player_dragging_a_window(self):
                     floating_windows.insert(0, floating_windows.pop(floating_windows.index(self)))
                     self._offset = self.xy - mouse

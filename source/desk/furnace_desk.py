@@ -15,17 +15,17 @@ class Furnace:
         self.planned_temperature = 0
         self.temperature_change = 0
 
-        self._width, self._height = 451, screen_height
-        self.xy = pygame.Vector2(screen_width - self._width, 0)
+        self.width, self.height = 451, screen_height - 333
+        self.xy = pygame.Vector2(screen_width - self.width, 0)
 
-        self._surface = pygame.Surface((self._width, self._height)).convert_alpha()
+        self._surface = pygame.Surface((self.width, self.height)).convert_alpha()
         self._surface.fill(YELLOW)
 
         self._border_surface = pygame.Surface((3, screen_height)).convert()
         self._border_surface.fill(WHITE)
         self._shadow_border = Shadow(self._border_surface)
 
-        self._rect = pygame.Rect(self.xy.x, self.xy.y, self._width, self._height)
+        self._rect = pygame.Rect(self.xy.x, self.xy.y, self.width, self.height)
 
     def _logic(self, events, mouse):
         if interval(500):
@@ -56,7 +56,7 @@ class Furnace:
         screen.blit(font.retron_2000_size_27.render(f"Planned: {self.planned_temperature}", False, WHITE), (1600, 200))
         screen.blit(font.retron_2000_size_27.render(f"Change: {self.temperature_change}", False, WHITE), (1600, 300))
 
-        screen.blit(self._shadow_border.surface, (self.xy.x - 1 - self._shadow_border.radius, self.xy.y - self._shadow_border.radius))
-        screen.blit(self._border_surface, (self.xy.x - 1, self.xy.y))
+        screen.blit(self._shadow_border.surface, (self.xy.x - 2 - self._shadow_border.radius, self.xy.y - self._shadow_border.radius))
+        screen.blit(self._border_surface, (self.xy.x - 2, self.xy.y))
 
 furnace = Furnace()
