@@ -3,8 +3,9 @@ import random
 
 from colors import *
 from desk.mini_desk import mini_desk_instance
+from desk.world import world_instance
 from display import screen
-from floating_window import FloatingWindow, floating_windows
+from floating_window import FloatingWindow, floating_windows, dragging
 from settings import screen_width, screen_height
 from shadow import Shadow
 from fonts import font
@@ -137,6 +138,10 @@ class Document:
                 if not self.should_draw: return
 
                 self._controls(events, mouse)
+
+                if self.background.colliderect(world_instance.rect_to_fall) and not dragging.currently_dragging:
+                    self.xy.y += 20
+                    self.background.y += 20
 
                 screen.blit(self._shadow.surface, (self.xy.x - self._shadow.radius, self.xy.y - self._shadow.radius))
                 screen.blit(self._surface, self.xy)

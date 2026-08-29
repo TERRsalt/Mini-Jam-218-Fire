@@ -3,6 +3,7 @@ import sys
 
 from desk.heaven_desk import heaven
 from desk.mini_desk import mini_desk_instance
+from desk.world import world_instance
 from interval_time import interval
 from colors import *
 from debug import debug_menu
@@ -51,6 +52,7 @@ class Desk:
 
             heaven.draw()
             furnace.draw(events, mouse)
+            world_instance.draw()
             mini_desk_instance.draw()
             desk_instance.draw()
             for floating_window in reversed(floating_windows.copy()): floating_window.draw(events, mouse)
