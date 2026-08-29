@@ -64,8 +64,8 @@ class Document:
         #info # Sins and virtues #
 
         while True:
-            max_virtues_value = -random.randint(-10, 100)
-            max_sins_value = random.randint(-10, 200 + max_virtues_value // 2)
+            max_virtues_value = -random.randint(-10, 150)
+            max_sins_value = random.randint(-5, 200)
 
             self.sins = {}
             available_sins = _DICTIONARY_OF_ALL_SINS.copy()
@@ -139,9 +139,9 @@ class Document:
 
                 self._controls(events, mouse)
 
-                if self.background.colliderect(world_instance.rect_to_fall) and not dragging.currently_dragging:
+                if self.rect.colliderect(world_instance.rect_to_fall) and not dragging.currently_dragging:
                     self.xy.y += 20
-                    self.background.y += 20
+                    self.rect.y += 20
 
                 screen.blit(self._shadow.surface, (self.xy.x - self._shadow.radius, self.xy.y - self._shadow.radius))
                 screen.blit(self._surface, self.xy)
@@ -159,9 +159,9 @@ for document in documents:
     random_additional_xy = pygame.Vector2(random.randint(1, 6), random.randint(-6, 0))
 
     document.look.xy.x += random_additional_xy.x
-    document.look.background.x += random_additional_xy.x
+    document.look.rect.x += random_additional_xy.x
 
     document.look.xy.y += random_additional_xy.y
-    document.look.background.y += random_additional_xy.y
+    document.look.rect.y += random_additional_xy.y
 
     floating_windows.append(document.look)
