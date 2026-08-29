@@ -1,21 +1,12 @@
 import pygame
 import sys
 
-from desk.dialog import Voice, dialog_1
-from desk.heaven_desk import heaven
-from desk.mini_desk import mini_desk_instance
-from desk.timer import timer_instance
-from desk.world import world_instance
 from colors import *
 from debug import debug_menu
 from display import screen
 from clickable import clickables
-from floating_window import floating_windows
 
-from desk.furnace_desk import furnace
-from desk.desk_desk import desk_instance
-
-class Desk:
+class MainMenu:
     def __init__(self, display, game_state_manager):
         self.display = display
         self.gameStateManager = game_state_manager
@@ -41,18 +32,6 @@ class Desk:
             #info # Drawing the GUI #
 
             screen.fill(WHITE)
-
-            heaven.draw()
-            furnace.draw(events, mouse)
-            world_instance.draw()
-            mini_desk_instance.draw()
-            timer_instance.draw()
-
-            dialog_1.draw(events, Voice.SYLWESTER)
-
-            desk_instance.draw()
-
-            for floating_window in reversed(floating_windows.copy()): floating_window.draw(events, mouse)
 
             debug_menu.draw(events, f"FPS: {self.fps}")
 

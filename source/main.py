@@ -3,7 +3,7 @@ import pygame
 from display import screen
 
 if __name__ == "__main__":
-    pygame.display.set_caption("Mini Jam 218: Fire")
+    pygame.display.set_caption("Welcome to H.E.L.L.")
 
     from game_class_manager import GameClassManager
 
@@ -14,12 +14,17 @@ if __name__ == "__main__":
 
             self.screen = screen
 
-            self.gameClassManager = GameClassManager("desk")
+            self.gameClassManager = GameClassManager("main_menu")
+            #self.gameClassManager = GameClassManager("desk")
 
             self.scenes = {}
 
         def _import_scene(self, scene):
-            if scene == "desk":
+            if scene == "main_menu":
+                from main_menu.main_main_menu import MainMenu
+                self.scenes["main_menu"] = MainMenu(self.screen, self.gameClassManager)
+
+            elif scene == "desk":
                 from desk.main_desk import Desk
                 self.scenes["desk"] = Desk(self.screen, self.gameClassManager)
 
