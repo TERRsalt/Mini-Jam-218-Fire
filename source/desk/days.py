@@ -1,11 +1,12 @@
 from desk.dialog import Dialog, Voice
+from desk.world import SylwesterLook
 
 global_dictionary = {"days": 1, "burned_documents": 0, "mistakes": 0}
 
 documents_to_burn = [2, 15, 20, 25, 30, 35]
-spawned_documents = [20, 30, 40, 50, 60, 70]
+spawned_documents = [5, 30, 40, 50, 60, 70]
 
-messages = [
+message_1 = [
     "Hi! I'm Sylwester!",
     "I'm the boss here",
     "This place is called H.E.L.L.",
@@ -57,22 +58,110 @@ messages = [
     "...I will come",
     "So good luck in your...",
     "...new eternal work!",
-
-
 ]
 
-test_message = ["Test"]
+message_2 = [
+    "Hey!",
+    "So remember when...",
+    "...I told you about...",
+    "...no special rules?",
+    "So here it comes!",
+    "Today you will need...",
+    "...to burn every document...",
+    "...that has the...",
+    "...”procrastination” sin",
+    "Oh, and you will need to...",
+    f"...burn at least {documents_to_burn[0]}...",
+    "...documents"
+    "So good luck in your...",
+    "...second day of work!"
+]
+message_3 = [
+    "Wow, you are...",
+    "...still alive!"
+    "Impressive",
+    "Okay, so today sin...",
+    "...is ”lying”",
+    "And you have to...",
+    f"...burn {documents_to_burn[2]} documents",
+    "See ya next day!"
+]
+
+message_4 = [
+    "Oh, sorry for...",
+    "...being late",
+    "You will have...",
+    "...1 minute less",
+    "The banned lie...",
+    "...today is ”theft”...",
+    "...and you need to...",
+    f"...burn at least {documents_to_burn[3]}...",
+    "...documents",
+    "Good luck!"
+]
+
+message_5 = [
+    "Okay, no more...",
+    "...talking",
+    "Lie is ”betrayal”...",
+    "and you need to burn...",
+    f"{documents_to_burn[4]} documents",
+    "See ya tomorrow"
+]
+
+message_6 = [
+    "Okay, so...",
+    "I will tell you...",
+    "...a secret",
+    "Nobody survived...",
+    "...this long in...",
+    "...this job",
+    "You are the first one...",
+    "...that made it to...",
+    "...sixth day",
+    "If you complete this...",
+    "...day, then I will...",
+    "...really employ you...",
+    "So get back to the work.",
+    "Most important day...",
+    "...is waiting for you",
+    "Good luck!"
+]
+
+test_m = ["Test"]
 
 dialogs = [
-    Dialog(test_message, Voice.SYLWESTER),
-    Dialog(messages, Voice.SYLWESTER),
-    Dialog(messages[0], Voice.SYLWESTER),
-    Dialog(messages[0], Voice.SYLWESTER),
-    Dialog(messages[0], Voice.SYLWESTER),
-    Dialog(messages[0], Voice.SYLWESTER),
+    Dialog(test_m, Voice.SYLWESTER),
+    Dialog(message_2, Voice.PHONE),
+    Dialog(message_3, Voice.PHONE),
+    Dialog(message_4, Voice.PHONE),
+    Dialog(message_5, Voice.PHONE),
+    Dialog(message_6, Voice.SYLWESTER),
 ]
 
 list_of_banned_sins = [
     None,
-    ["Murder"]
+    "Procrastination",
+    "Lying",
+    "Theft",
+    "Betrayal",
+    "Murder"
+]
+
+world_sylwester = [
+    SylwesterLook.SYLWESTER,
+    None,
+    None,
+    None,
+    None,
+    SylwesterLook.SYLWESTER
+]
+
+dialogs_sylwester = [
+    Voice.SYLWESTER,
+    Voice.PHONE,
+    Voice.PHONE,
+    Voice.PHONE,
+    Voice.PHONE,
+    SylwesterLook.SYLWESTER
 ]

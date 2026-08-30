@@ -13,50 +13,123 @@ from fonts import font
 from colors import *
 from desk.days import *
 
-#todo # Look up this sins and virtues made by AI and improve on them #
+#info # These were made up by the AI #
 
 DICTIONARY_OF_ALL_SINS = {
-    "Murder": 100,
-    "Treason": 90,
-    "Cruelty": 80,
-    "Extortion": 70,
+    # Tiny, everyday sins (common)
+    "Interrupting":       2,
+    "Swearing":           4,
+    "Littering":          5,
+    "Oversleeping":       6,
+    "Talking Loudly":     6,
+    "Cutting in Line":    7,
+    "Fibbing":            8,
+    "Procrastination":    9,
+    "Complaining":        9,
+    "Gossiping":         10,
+    "Vanity":            11,
+    "Overeating":        12,
+    "Skipping Chores":   12,
+    "Rudeness":          13,
+    "Ghosting Someone":  14,
+    "Spreading Rumors":  15,
+    "Laziness":          16,
+    "Jealousy":          17,
+    "Petty Insults":     18,
+    "Mockery":           19,
+    "Overdrinking":      20,
 
-    "Arson": 60,
-    "Grand Theft": 50,
-    "Embezzlement": 40,
-    "Adultery": 35,
-    "Corruption": 30,
+    # Low-moderate sins
+    "Minor Cheating":    22,
+    "Overindulgence":    24,
+    "Blasphemy":         26,
+    "Envy":              28,
+    "Pride":             30,
+    "Public Tantrum":    31,
+    "Breaking a Promise":33,
+    "Cyberbullying":     35,
+    "Lying":             38,
+    "Gluttony":          40,
 
-    "Fraud": 25,
-    "Perjury": 20,
-    "Vandalism": 15,
-    "Greed": 15,
-    "Gluttony": 10,
-    "Envy": 10,
-    "Sloth": 10,
-    "Lying": 5,
-    "Gossiping": 5,
-    "Tardiness": 5,
-    "Swearing": 5
+    # Moderate sins (less common)
+    "Greed":             45,
+    "Manipulation":      50,
+    "Infidelity":        55,
+    "Bullying":          58,
+    "Theft":             62,
+    "Fraud":             66,
+    "Corruption":        70,
+    "Lust":              73,
+
+    # Severe sins (rare)
+    "Betrayal":          78,
+    "Wrath":             82,
+    "Assault":           86,
+    "Slavery":           90,
+    "Torture":           94,
+
+    # Extreme sins (extremely rare — near the cap)
+    "Murder":            97,
+    "Genocide":         100,
 }
 
 DICTIONARY_OF_ALL_VIRTUES = {
-    "Self-sacrifice": -100,
-    "Saved a Life": -90,
-    "Lifelong Charity": -80,
-    "Forgave Enemy": -70,
+    # Tiny, everyday virtues (common)
+    "Saying Thank You":   -2,
+    "Holding the Door":   -3,
+    "Smiling at Someone": -4,
+    "Recycling":          -5,
+    "Being On Time":      -6,
+    "Listening Well":     -6,
+    "Waiting Your Turn":  -7,
+    "Small Compliment":   -8,
+    "Tidying Up":         -9,
+    "Gratitude":          -9,
+    "Cheerfulness":      -10,
+    "Modesty":           -11,
+    "Sharing Food":      -12,
+    "Doing Chores":      -12,
+    "Politeness":        -13,
+    "Checking In on Someone": -14,
+    "Encouraging a Friend": -15,
+    "Diligence":         -16,
+    "Patience":          -17,
+    "Helping a Stranger":-18,
+    "Sincere Apology":   -19,
+    "Volunteering":      -20,
 
-    "Adopted a Stray": -60,
-    "Donated Wealth": -50,
-    "Volunteer Work": -40,
-    "Return Lost Wallet": -30,
+    # Low-moderate virtues
+    "Minor Honesty":     -22,
+    "Temperance":        -24,
+    "Fairness":          -26,
+    "Loyalty":           -28,
+    "Kindness":          -30,
+    "Standing Up for Someone": -31,
+    "Keeping a Promise": -33,
+    "Comforting Someone":-35,
+    "Humility":          -38,
+    "Honesty":           -40,
 
-    "Helped Neighbor": -25,
-    "Gave Up Seat": -20,
-    "Fed Homeless": -15,
-    "Kind Words": -10,
-    "Politeness": -5,
-    "Honesty": -5
+    # Moderate virtues (less common)
+    "Generosity":        -45,
+    "Chastity":          -50,
+    "Forgiveness":       -55,
+    "Charity":           -58,
+    "Courage":           -62,
+    "Justice":           -66,
+    "Compassion":        -70,
+    "Wisdom":            -73,
+
+    # Profound virtues (rare)
+    "Mercy":             -78,
+    "Devotion":          -82,
+    "Selflessness":      -86,
+    "Sacrifice":         -90,
+    "Heroic Rescue":     -94,
+
+    # Transcendent virtues (extremely rare — near the cap)
+    "Redemption":         -97,
+    "Unconditional Love": -100,
 }
 
 _DOCUMENT_TOP = pygame.image.load("assets/gfx/document_top.png").convert_alpha()
@@ -179,6 +252,7 @@ def reset_day() -> None:
 
     global_dictionary["mistakes"] = 0
     global_dictionary["burned_documents"] = 0
-    timer_instance.time_in_seconds = 5 * 60
+    timer_instance.times_up = False
+    timer_instance.time_in_seconds = 5 * 60 + 3
     timer_instance.minutes = 5
-    timer_instance.seconds = 0
+    timer_instance.seconds = 3

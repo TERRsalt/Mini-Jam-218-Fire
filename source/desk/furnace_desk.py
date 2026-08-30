@@ -111,7 +111,7 @@ class Furnace:
         screen.blit(self._shadow_furnace.surface, (self.xy.x - self._shadow_furnace.radius,  -self._shadow_furnace.radius))
         screen.blit(self._surface_furnace, (self.xy.x, 0))
 
-        screen.blit(font.departure_mono_size_22.render(f"{self.temperature}°C", False, WHITE), (self.xy.x, self.xy.y))
+        screen.blit(font.departure_mono_size_22.render(f"{self.temperature}°C", False, WHITE), (self.xy.x + 4, self.xy.y))
 
         #pygame.draw.rect(screen, PURPLE, self._rect_furnace)
 

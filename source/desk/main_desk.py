@@ -40,6 +40,18 @@ class Desk:
         self._number_of_burned_documents = 0
 
         reset_day()
+        self._win_condition_checked = False
+        timer_instance.seconds -= 3
+        timer_instance.time_in_seconds -= 3
+
+    def _reset_day(self):
+        reset_day()
+        furnace.temperature = 666
+        furnace.temperature_plus_change = 0
+        furnace.temperature_minus_change = 0
+        furnace.planned_minus_temperature = 0
+        furnace.planned_plus_temperature = 0
+        self._win_condition_checked = False
 
     def run(self) -> None:
         self.clock = pygame.time.Clock()
@@ -66,17 +78,19 @@ class Desk:
             #minor # Wining the game #
 
             if global_dictionary["burned_documents"] >= documents_to_burn[global_dictionary["days"] - 1] and \
-                    furnace.temperature_minus_change == 0 and furnace.temperature_plus_change == 0:
+                    furnace.temperature_minus_change == 0 and furnace.temperature_plus_change == 0 and not self._win_condition_checked:
+                self._win_condition_checked = True
+
                 for document_single in document.documents:
                     if document_single.sum_of_sins != 0 and document_single.look.rect.colliderect(heaven.rect):
                         global_dictionary["mistakes"] += 1
                     elif document_single.sum_of_sins == 0 and not document_single.look.rect.colliderect(heaven.rect):
                         global_dictionary["mistakes"] += 1
 
-                    #elif document.sins.keys()
+                    if list_of_banned_sins[global_dictionary["days"] - 1] is not None:
+                        if list_of_banned_sins[global_dictionary["days"] - 1] in document_single.sins.keys():
+                            global_dictionary["mistakes"] += 1
 
-                #print(global_dictionary["mistakes"])
-                #print(document.documents)
                 if not global_dictionary["mistakes"] > 0: self._day_complete = True
 
             #info # Drawing the GUI #
@@ -88,7 +102,7 @@ class Desk:
 
                 if dialogs[global_dictionary["days"] - 1].sylwester_talking:
                     furnace.draw(events, mouse, False)
-                    world_instance.draw(SylwesterLook.SYLWESTER)
+                    world_instance.draw(world_sylwester[global_dictionary["days"] - 1])
                     dialogs[global_dictionary["days"] - 1].draw(events, Voice.SYLWESTER)
                     timer_instance.draw(False)
                 else:
@@ -111,17 +125,18 @@ class Desk:
                 pygame.display.flip()
                 pygame.time.wait(3000)
                 previous_times["furnace"] = pygame.time.get_ticks()
-                reset_day()
+                self._reset_day()
+
             elif self._game_lost is not None:
                 screen.fill(RED)
-                text = font.retron_2000_size_108.render(f"You lost", False, WHITE)
+                text = font.retron_2000_size_108.render(f"You lost {self._game_lost}", False, WHITE)
                 render_text_in_the_middle(text, screen, pygame.Vector2(0, 444), screen_width)
                 self._day_complete = False
                 self._game_lost = None
                 pygame.display.flip()
                 pygame.time.wait(3000)
                 previous_times["furnace"] = pygame.time.get_ticks()
-                reset_day()
+                self._reset_day()
 
             debug_menu.draw(events, f"FPS: {self.fps}")
 
