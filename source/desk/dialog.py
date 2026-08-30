@@ -33,6 +33,8 @@ class Dialog:
         self._number_of_letters = 0
         self._should_dialog_increase_number_of_letters = True
 
+        self.sylwester_talking = True
+
     def _controls(self, events):
         for event in events:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
@@ -44,13 +46,17 @@ class Dialog:
                     if self._message_number == len(self._full_message): self.should_draw = False
 
     def draw(self, events, voice):
-        if not self.should_draw: return
+        if not self.should_draw:
+            self.sylwester_talking = False
+            return
 
         screen.blit(self._shadow_dialog.surface, (-self._shadow_dialog.radius, -self._shadow_dialog.radius))
         screen.blit(self._dialog_window, (0, 0))
 
         self._controls(events)
-        if not self.should_draw: return #minor # Yes, I'm checking it again, because I don't have time to code it properly ^-^ #
+        if not self.should_draw: #minor # Yes, I'm checking it again, because I don't have time to code it properly ^-^ #
+            self.sylwester_talking = False
+            return
 
         if len(self._full_message[self._message_number]) != self._number_of_letters:
             if interval(66, "dialog") and self._should_dialog_increase_number_of_letters:

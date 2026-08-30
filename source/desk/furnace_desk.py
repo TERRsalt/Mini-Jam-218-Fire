@@ -53,20 +53,20 @@ class Furnace:
         ]
         self._fire_to_choose = -1
 
-
         width_minus_in_rect_furnace = self.width // 4
         self._rect_furnace = pygame.Rect(self.xy.x + width_minus_in_rect_furnace, self.xy.y, self.width + width_minus_in_rect_furnace, self.height)
 
-    def _logic(self, events, mouse):
+    def _logic(self, events, mouse, should_temperature_change):
         if interval(500, "furnace"):
-            if self.temperature_change == 0:
-                if self.planned_temperature > 0: self.temperature_change = 1
-                elif self.planned_temperature < 0: self.temperature_change = -1
+            if should_temperature_change:
+                if self.temperature_change == 0:
+                    if self.planned_temperature > 0: self.temperature_change = 1
+                    elif self.planned_temperature < 0: self.temperature_change = -1
 
-            if self.planned_temperature != 0: self.planned_temperature -= self.temperature_change
-            else: self.temperature_change = 0
+                if self.planned_temperature != 0: self.planned_temperature -= self.temperature_change
+                else: self.temperature_change = 0
 
-            self.temperature += self.temperature_change - 1
+                self.temperature += self.temperature_change - 1
 
             self._fire_to_choose += 1
             if self._fire_to_choose >= 4: self._fire_to_choose = 0
@@ -85,8 +85,8 @@ class Furnace:
             deleted_document = documents.pop(document_to_delete)
             if deleted_document.look in floating_windows: floating_windows.remove(deleted_document.look)
 
-    def draw(self, events, mouse):
-        self._logic(events, mouse)
+    def draw(self, events, mouse, should_temperature_change = True):
+        self._logic(events, mouse, should_temperature_change)
 
         screen.blit(self._surface, self.xy)
 
@@ -101,9 +101,11 @@ class Furnace:
         screen.blit(self._shadow_furnace.surface, (self.xy.x - self._shadow_furnace.radius,  -self._shadow_furnace.radius))
         screen.blit(self._surface_furnace, (self.xy.x, 0))
 
-        screen.blit(font.retron_2000_size_27.render(f"Temperature: {self.temperature}", False, WHITE), (1600, 100))
-        screen.blit(font.retron_2000_size_27.render(f"Planned: {self.planned_temperature}", False, WHITE), (1600, 200))
-        screen.blit(font.retron_2000_size_27.render(f"Change: {self.temperature_change}", False, WHITE), (1600, 300))
+        screen.blit(font.departure_mono_size_22.render(f"{self.temperature}°C", False, WHITE), (self.xy.x, self.xy.y))
+
+        #screen.blit(font.retron_2000_size_27.render(f"Temperature: {self.temperature}", False, WHITE), (1600, 100))
+        #screen.blit(font.retron_2000_size_27.render(f"Planned: {self.planned_temperature}", False, WHITE), (1600, 200))
+        #screen.blit(font.retron_2000_size_27.render(f"Change: {self.temperature_change}", False, WHITE), (1600, 300))
 
         screen.blit(self._shadow_border.surface, (self.xy.x - 2 - self._shadow_border.radius, self.xy.y - self._shadow_border.radius))
         screen.blit(self._border_surface, (self.xy.x - 2, self.xy.y))

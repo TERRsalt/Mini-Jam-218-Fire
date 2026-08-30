@@ -1,10 +1,15 @@
 #intro # I couldn't think of any better name to give to this file, so it is the "world" #
 
 import pygame
+from enum import Enum
 
 from colors import *
 from display import screen
 from shadow import Shadow
+
+class SylwesterLook(Enum):
+    SYLWESTER = 0
+    DEVIL = 1
 
 class World:
     def __init__(self):
@@ -20,11 +25,15 @@ class World:
         self._shadow_desk = Shadow(self._image_desk)
         self._phone = pygame.image.load("assets/gfx/phone.png").convert_alpha()
 
-    def draw(self) -> None:
+    def draw(self, sylwester = None) -> None:
         screen.blit(self._image, (0, 0))
 
-        screen.blit(self._shadow_sylwester.surface, (-self._shadow_sylwester.radius, -self._shadow_sylwester.radius))
-        screen.blit(self._image_sylwester, (0, 0))
+        if sylwester == SylwesterLook.SYLWESTER:
+            screen.blit(self._shadow_sylwester.surface, (-self._shadow_sylwester.radius, -self._shadow_sylwester.radius))
+            screen.blit(self._image_sylwester, (0, 0))
+        elif sylwester == SylwesterLook.DEVIL:
+            screen.blit(self._shadow_sylwester.surface, (-self._shadow_sylwester.radius, -self._shadow_sylwester.radius))
+            screen.blit(self._image_sylwester, (0, 0))
 
         screen.blit(self._shadow_desk.surface, (-self._shadow_desk.radius, -self._shadow_desk.radius))
         screen.blit(self._image_desk, (0, 0))

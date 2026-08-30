@@ -29,8 +29,8 @@ class Timer:
             self.minutes = self.seconds = 0
             self.times_up = True
 
-    def draw(self):
-        self._run()
+    def draw(self, should_time_go = True):
+        if should_time_go: self._run()
 
         screen.blit(self._image, self._xy)
         time_minutes_seconds = font.departure_mono_size_22.render(f"{self.minutes:02d}:{self.seconds:02d}", False, RED)
