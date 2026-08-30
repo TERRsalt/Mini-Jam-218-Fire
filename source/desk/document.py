@@ -10,10 +10,11 @@ from settings import screen_width, screen_height
 from shadow import Shadow
 from fonts import font
 from colors import *
+from desk.days import *
 
 #todo # Look up this sins and virtues made by AI and improve on them #
 
-_DICTIONARY_OF_ALL_SINS = {
+DICTIONARY_OF_ALL_SINS = {
     "Murder": 100,
     "Treason": 90,
     "Cruelty": 80,
@@ -38,7 +39,7 @@ _DICTIONARY_OF_ALL_SINS = {
     "Swearing": 5
 }
 
-_DICTIONARY_OF_ALL_VIRTUES = {
+DICTIONARY_OF_ALL_VIRTUES = {
     "Self-sacrifice": -100,
     "Saved a Life": -90,
     "Lifelong Charity": -80,
@@ -67,10 +68,10 @@ class Document:
 
         while True:
             max_virtues_value = -random.randint(-10, 150)
-            max_sins_value = random.randint(-5, 200)
+            max_sins_value = random.randint(-10, 200)
 
             self.sins = {}
-            available_sins = _DICTIONARY_OF_ALL_SINS.copy()
+            available_sins = DICTIONARY_OF_ALL_SINS.copy()
             try: sum_of_sins = sum(self.sins.values())
             except ValueError: sum_of_sins = 0
             while max_sins_value > sum_of_sins:
@@ -80,7 +81,7 @@ class Document:
                 self.sins[random_sin[0]] = random_sin[1]
 
             self.virtues = {}
-            available_virtues = _DICTIONARY_OF_ALL_VIRTUES.copy()
+            available_virtues = DICTIONARY_OF_ALL_VIRTUES.copy()
             try: sum_of_virtues = sum(self.virtues.values())
             except ValueError: sum_of_virtues = 0
             while max_virtues_value < sum_of_virtues:
@@ -154,16 +155,20 @@ class Document:
     def draw(self, events, mouse) -> None: self.look.draw(events, mouse)
 
 documents = []
-for i in range(25): documents.append(Document())
-_max_height_of_documents = max(document.look.height for document in documents)
-documents.sort(key = lambda document: document.look.height, reverse = False)
-for document in documents:
-    random_additional_xy = pygame.Vector2(random.randint(1, 6), random.randint(-6, 0))
+def reset_day() -> None:
+    global documents
 
-    document.look.xy.x += random_additional_xy.x
-    document.look.rect.x += random_additional_xy.x
+    documents = []
+    for i in range(spawned_documents[day[0] - 1]): documents.append(Document())
+    _max_height_of_documents = max(document.look.height for document in documents)
+    documents.sort(key = lambda document: document.look.height, reverse = False)
+    for document in documents:
+        random_additional_xy = pygame.Vector2(random.randint(1, 6), random.randint(-6, 0))
 
-    document.look.xy.y += random_additional_xy.y
-    document.look.rect.y += random_additional_xy.y
+        document.look.xy.x += random_additional_xy.x
+        document.look.rect.x += random_additional_xy.x
 
-    floating_windows.append(document.look)
+        document.look.xy.y += random_additional_xy.y
+        document.look.rect.y += random_additional_xy.y
+
+        floating_windows.append(document.look)

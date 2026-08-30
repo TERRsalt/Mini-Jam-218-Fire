@@ -3,7 +3,7 @@ import pygame
 from desk.world import world_instance
 from display import screen
 from colors import *
-from interval_time import interval
+from interval_time import interval, previous_times
 from fonts import font
 
 class Timer:
@@ -24,6 +24,7 @@ class Timer:
             if self.seconds < 0:
                 self.seconds = 59
                 self.minutes -= 1
+            self.time_in_seconds -= 1
 
         if self.time_in_seconds <= 0:
             self.minutes = self.seconds = 0
@@ -31,6 +32,7 @@ class Timer:
 
     def draw(self, should_time_go = True):
         if should_time_go: self._run()
+        else: previous_times["timer"] = pygame.time.get_ticks()
 
         screen.blit(self._image, self._xy)
         time_minutes_seconds = font.departure_mono_size_22.render(f"{self.minutes:02d}:{self.seconds:02d}", False, RED)

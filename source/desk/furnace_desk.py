@@ -7,7 +7,7 @@ from fonts import font
 from shadow import Shadow
 from floating_window import floating_windows
 
-from desk.document import documents
+import desk.document as document
 
 class Furnace:
     def __init__(self):
@@ -16,7 +16,7 @@ class Furnace:
         self.planned_temperature = 0
         self.temperature_change = 0
 
-        self.width, self.height = 451, screen_height - 333
+        self.width, self.height = 451, screen_height - 444
         self.xy = pygame.Vector2(screen_width - self.width, 0)
 
         self._surface = pygame.Surface((self.width, self.height)).convert_alpha()
@@ -33,7 +33,7 @@ class Furnace:
         self._image_furnace = pygame.image.load("assets/gfx/furnace.png").convert_alpha()
         self._image_chimney = pygame.image.load("assets/gfx/furnace_chimney.png").convert_alpha()
         self._surface_furnace.blit(self._image_furnace, (0, self.height - self._image_furnace.get_height()))
-        y_chimney = self._image_furnace.get_height() - 40
+        y_chimney = self.height - self._image_furnace.get_height() - 40
         while y_chimney > -41:
             self._surface_furnace.blit(self._image_chimney, (0, y_chimney))
             y_chimney -= 40
@@ -53,8 +53,7 @@ class Furnace:
         ]
         self._fire_to_choose = -1
 
-        width_minus_in_rect_furnace = self.width // 4
-        self._rect_furnace = pygame.Rect(self.xy.x + width_minus_in_rect_furnace, self.xy.y, self.width + width_minus_in_rect_furnace, self.height)
+        self._rect_furnace = pygame.Rect(self.xy.x + 75, self.height - 260, 300, 200)
 
     def _logic(self, events, mouse, should_temperature_change):
         if interval(500, "furnace"):
@@ -72,25 +71,23 @@ class Furnace:
             if self._fire_to_choose >= 4: self._fire_to_choose = 0
 
         document_to_delete = None
-        for i in range(len(documents)):
-            if documents[i].look.rect.colliderect(self._rect_furnace):
-                self.planned_temperature += documents[i].sum_of_sins_and_virtues
+        for i in range(len(document.documents)):
+            if document.documents[i].look.rect.colliderect(self._rect_furnace):
+                self.planned_temperature += document.documents[i].sum_of_sins_and_virtues
 
-                if documents[i].sum_of_sins_and_virtues > 0: self.temperature_change += 1
-                else: self.temperature_change -= 1
+                if document.documents[i].sum_of_sins_and_virtues > 0: self.temperature_change += 2
+                else: self.temperature_change -= 5
 
                 document_to_delete = i
 
         if document_to_delete is not None:
-            deleted_document = documents.pop(document_to_delete)
+            deleted_document = document.documents.pop(document_to_delete)
             if deleted_document.look in floating_windows: floating_windows.remove(deleted_document.look)
 
     def draw(self, events, mouse, should_temperature_change = True):
         self._logic(events, mouse, should_temperature_change)
 
         screen.blit(self._surface, self.xy)
-
-        #pygame.draw.rect(screen, PURPLE, self._rect_furnace)
 
         xy_for_the_fire = pygame.Vector2(self.xy.x + 75, self.height - 260)
         pygame.draw.rect(screen, RED, pygame.Rect(xy_for_the_fire.x, xy_for_the_fire.y, 300, 200))
@@ -103,9 +100,10 @@ class Furnace:
 
         screen.blit(font.departure_mono_size_22.render(f"{self.temperature}°C", False, WHITE), (self.xy.x, self.xy.y))
 
-        #screen.blit(font.retron_2000_size_27.render(f"Temperature: {self.temperature}", False, WHITE), (1600, 100))
-        #screen.blit(font.retron_2000_size_27.render(f"Planned: {self.planned_temperature}", False, WHITE), (1600, 200))
-        #screen.blit(font.retron_2000_size_27.render(f"Change: {self.temperature_change}", False, WHITE), (1600, 300))
+        pygame.draw.rect(screen, PURPLE, self._rect_furnace)
+
+        screen.blit(font.retron_2000_size_27.render(f"Planned: {self.planned_temperature}", False, WHITE), (1600, 200))
+        screen.blit(font.retron_2000_size_27.render(f"Change: {self.temperature_change}", False, WHITE), (1600, 300))
 
         screen.blit(self._shadow_border.surface, (self.xy.x - 2 - self._shadow_border.radius, self.xy.y - self._shadow_border.radius))
         screen.blit(self._border_surface, (self.xy.x - 2, self.xy.y))

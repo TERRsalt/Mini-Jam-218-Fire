@@ -12,7 +12,7 @@ from text_funs import render_text_in_the_middle
 class Voice(Enum):
     SYLWESTER = 0
     PHONE = 1
-    SYLWESTER_ANGRY = 2
+    DEVIL = 2
 
 _SYLWESTER_SOUNDS = pygame.mixer.Sound("assets/sfx/sylwester.ogg")
 _PHONE_SOUNDS = pygame.mixer.Sound("assets/sfx/phone.ogg")
@@ -23,7 +23,7 @@ class Dialog:
         self.should_draw = True
 
         self._dialog_window = pygame.image.load("assets/gfx/dialog.png").convert_alpha()
-        if who_is_talking == Voice.SYLWESTER: self._dialog_window.blit(pygame.image.load("assets/gfx/dialog_sylwester.png").convert_alpha(), (0, 0))
+        if who_is_talking == Voice.SYLWESTER or Voice.DEVIL: self._dialog_window.blit(pygame.image.load("assets/gfx/dialog_sylwester.png").convert_alpha(), (0, 0))
         else: self._dialog_window.blit(pygame.image.load("assets/gfx/dialog_phone.png").convert_alpha(), (0, 0))
 
         self._shadow_dialog = Shadow(self._dialog_window)
@@ -68,10 +68,3 @@ class Dialog:
 
         rendered_message = font.departure_mono_size_22.render(self._full_message[self._message_number][:self._number_of_letters], False, WHITE)
         render_text_in_the_middle(rendered_message, screen, pygame.Vector2(2, 255), self._dialog_window.get_width() - 2)
-
-message_1 = [
-    "The brown fox jumps over the edge",
-    "Second message",
-    "Wow, a third message!"
-]
-dialog_1 = Dialog(message_1, Voice.PHONE)

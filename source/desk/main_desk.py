@@ -1,7 +1,7 @@
 import pygame
 import sys
+import random
 
-from desk.dialog import Voice, dialog_1, Dialog
 from desk.heaven_desk import heaven
 from desk.mini_desk import mini_desk_instance
 from desk.timer import timer_instance
@@ -10,10 +10,11 @@ from colors import *
 from debug import debug_menu
 from display import screen
 from clickable import clickables
+from desk.document import reset_day
 from floating_window import floating_windows
-
 from desk.furnace_desk import furnace
 from desk.desk_desk import desk_instance
+from desk.days import *
 
 class Desk:
     def __init__(self, display, game_state_manager):
@@ -35,61 +36,7 @@ class Desk:
 
         self._number_of_burned_documents = 0
 
-        self._number_of_documents_to_burn = 10
-        self._message_1 = [
-        #     "Hi! I'm Sylwester!",
-        #     "I'm the boss here",
-        #     "This place is called H.E.L.L.",
-        #     "You can call me also the Devil",
-        #     "You were sentenced here...",
-        #     "for the eternity",
-        #     "But lucky you...",
-        #     "...I have chosen YOU...",
-        #     "...to serve as my worker in...",
-        #     "...H.E.L.L. bureaucracy",
-        #     "See this furnace on you right?",
-        #     "You wanna keep it at 666°C",
-        #     "If it drops below 555°C...",
-        #     "...then you will be...",
-        #     "...fired and sent...",
-        #     "...back to literal hell",
-        #     "But if it ever goes...",
-        #     "...above 777°C...",
-        #     "...then it potentially...",
-        #     "...may explode",
-        #     "Why 777°C?",
-        #     "Well we order it from..",
-        #     "H.E.A.V.E.N. and it's Mireks's...",
-        #     "...I mean God's...",
-        #     "...favorite number...",
-        #     "...or something",
-        #     "Either way you...",
-        #     "...don't wanna to go...",
-        #     "...above this temperature...",
-        #     "...because if you do...",
-        #     "...then I will guarantee more...",
-        #     "...suffering to you",
-        #     "Got it? Good",
-        #     "So for the first day...",
-        #     "...I don't have any...",
-        #     "...special requests",
-        #     "You just need to burn...",
-        #     f"...{self._number_of_documents_to_burn} documents before...",
-        #     "the time runs out",
-        #     "And remember that the...",
-        #     "...documents with only...",
-        #     "...virtues should be sent",
-        #     "...to H.E.A.V.E.N",
-        #     "They were lost...",
-        #     "...somewhere in our...",
-        #     "...bureaucracy",
-        #     "You will have only...",
-        #     "3 mistakes, before...",
-        #     "...I will come",
-        #     "So good luck in your...",
-            "...new eternal work!"
-        ]
-        self._dialog_1 = Dialog(self._message_1, Voice.SYLWESTER)
+        reset_day()
 
     def run(self) -> None:
         self.clock = pygame.time.Clock()
@@ -113,28 +60,34 @@ class Desk:
 
             #minor # Wining the game #
 
-            if self._number_of_burned_documents >= self._number_of_documents_to_burn: self._day_complete = True
+            if self._number_of_burned_documents >= documents_to_burn[self._day - 1]:
+                if furnace.temperature + furnace.planned_temperature < 555: self._game_lost = "low_temperature"
+                elif furnace.temperature + furnace.planned_temperature > 777: self._game_lost = "high_temperature"
+                self._day_complete = True
 
             #info # Drawing the GUI #
 
-            screen.fill(WHITE)
+            if not self._game_lost:
+                screen.fill(WHITE)
 
-            heaven.draw()
+                heaven.draw()
 
-            if self._dialog_1.sylwester_talking:
-                furnace.draw(events, mouse, False)
-                world_instance.draw(SylwesterLook.SYLWESTER)
-                self._dialog_1.draw(events, Voice.SYLWESTER)
-                timer_instance.draw(False)
-            else:
-                furnace.draw(events, mouse)
-                world_instance.draw()
-                timer_instance.draw()
+                if dialogs[self._day - 1].sylwester_talking:
+                    furnace.draw(events, mouse, False)
+                    world_instance.draw(SylwesterLook.SYLWESTER)
+                    dialogs[self._day - 1].draw(events, Voice.SYLWESTER)
+                    timer_instance.draw(False)
+                else:
+                    furnace.draw(events, mouse)
+                    world_instance.draw()
+                    timer_instance.draw()
 
-            mini_desk_instance.draw()
-            desk_instance.draw()
+                mini_desk_instance.draw()
+                desk_instance.draw()
 
-            for floating_window in reversed(floating_windows.copy()): floating_window.draw(events, mouse)
+                for floating_window in reversed(floating_windows.copy()): floating_window.draw(events, mouse)
+
+            else: screen.fill(RED)
 
             debug_menu.draw(events, f"FPS: {self.fps}")
 
