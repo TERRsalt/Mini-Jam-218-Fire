@@ -2,9 +2,11 @@ import pygame
 
 from colors import *
 from clickable import clickables
-from settings import screen_width, screen_height
+from display import screen_width, screen_height
 
 #info # `Dragging` #
+
+controls_enabled = True
 
 class Dragging:
     def __init__(self): self.currently_dragging = None
@@ -34,6 +36,8 @@ class FloatingWindow:
         self._offset = pygame.Vector2()
 
     def _controls(self, events, mouse) -> None:
+        if not controls_enabled: return
+
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(mouse):
                 colliding = [floating_window for floating_window in floating_windows if floating_window.rect.collidepoint(mouse)]

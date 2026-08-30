@@ -4,6 +4,7 @@ from display import screen
 
 if __name__ == "__main__":
     pygame.display.set_caption("Welcome to H.E.L.L.")
+    pygame.display.set_icon(pygame.image.load("assets/icon/icon.png"))
 
     from game_class_manager import GameClassManager
 

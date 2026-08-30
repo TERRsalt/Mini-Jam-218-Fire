@@ -81,5 +81,7 @@ class Dialog:
             elif voice == Voice.PHONE and _PHONE_SOUNDS.get_num_channels() == 0: _PHONE_SOUNDS.play()
             elif voice == Voice.DEVIL and _DEVIL_SOUNDS.get_num_channels() == 0: _DEVIL_SOUNDS.play()
 
+        else: previous_times["dialog"] = pygame.time.get_ticks()
+
         rendered_message = font.departure_mono_size_22.render(self._full_message[self._message_number][:self._number_of_letters], False, WHITE)
         render_text_in_the_middle(rendered_message, screen, pygame.Vector2(2, 255), self._dialog_window.get_width() - 2)

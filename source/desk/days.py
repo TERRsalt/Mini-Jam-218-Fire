@@ -3,8 +3,8 @@ from desk.world import SylwesterLook
 
 global_dictionary = {"days": 1, "burned_documents": 0, "mistakes": 0}
 
-documents_to_burn = [10, 15, 20, 25, 30, 35]
-spawned_documents = [20, 30, 40, 50, 60, 70]
+documents_to_burn = [15, 21, 25, 30, 50, 50]
+spawned_documents = [5, 7, 10, 15, 20, 25]
 
 message_1 = [
     "Hi! I'm Sylwester!",
@@ -12,12 +12,12 @@ message_1 = [
     "This place is called H.E.L.L.",
     "You can call me also the Devil",
     "You were sentenced here...",
-    "for the eternity",
+    "for eternity",
     "But lucky you...",
     "...I have chosen YOU...",
     "...to serve as my worker in...",
     "...H.E.L.L. bureaucracy",
-    "See this furnace on you right?",
+    "See this furnace on your right?",
     "You wanna keep it at 666°C",
     "If it drops below 555°C...",
     "...then you will be...",
@@ -28,13 +28,13 @@ message_1 = [
     "...then it potentially...",
     "...may explode",
     "Why 777°C?",
-    "Well we order it from..",
-    "H.E.A.V.E.N. and it's Mireks's...",
+    "Well, we order it from..",
+    "H.E.A.V.E.N. and its Mirek's...",
     "...I mean God's...",
     "...favorite number...",
     "...or something",
-    "Either way you...",
-    "...don't wanna to go...",
+    "Either way, you...",
+    "...don't wanna go...",
     "...above this temperature...",
     "...because if you do...",
     "...then I will guarantee more...",
@@ -56,6 +56,10 @@ message_1 = [
     "You will have only...",
     "3 mistakes, before...",
     "...I will come",
+    "Oh and you will need...",
+    "...to wait for the...",
+    "...temperature to...",
+    "...stabilise",
     "So good luck in your...",
     "...new eternal work!",
 ]
@@ -72,15 +76,16 @@ message_2 = [
     "...”procrastination” sin",
     "Oh, and you will need to...",
     f"...burn at least {documents_to_burn[0]}...",
-    "...documents"
+    "...documents,",
     "So good luck in your...",
     "...second day of work!"
 ]
+
 message_3 = [
     "Wow, you are...",
-    "...still alive!"
+    "...still alive!",
     "Impressive",
-    "Okay, so today sin...",
+    "Okay, so today's sin...",
     "...is ”lying”",
     "And you have to...",
     f"...burn {documents_to_burn[2]} documents",
@@ -90,9 +95,7 @@ message_3 = [
 message_4 = [
     "Oh, sorry for...",
     "...being late",
-    "You will have...",
-    "...1 minute less",
-    "The banned lie...",
+    "The banned sin...",
     "...today is ”theft”...",
     "...and you need to...",
     f"...burn at least {documents_to_burn[3]}...",
@@ -103,7 +106,7 @@ message_4 = [
 message_5 = [
     "Okay, no more...",
     "...talking",
-    "Lie is ”betrayal”...",
+    "The sin is ”betrayal”...",
     "and you need to burn...",
     f"{documents_to_burn[4]} documents",
     "See ya tomorrow"

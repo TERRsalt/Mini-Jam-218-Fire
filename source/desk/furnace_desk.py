@@ -11,6 +11,8 @@ from floating_window import floating_windows, dragging
 
 import desk.document as document
 
+_PAPER_BURNING_SOUND = pygame.mixer.Sound("assets/sfx/paper_burning.wav")
+
 class Furnace:
     def __init__(self):
         self.temperature = 666
@@ -93,6 +95,8 @@ class Furnace:
 
                 if document.documents[i].sum_of_sins == 0: global_dictionary["mistakes"] += 1
 
+                _PAPER_BURNING_SOUND.play()
+
         if document_to_delete is not None:
             #document.deleted_documents.append(document_to_delete)
             deleted_document = document.documents.pop(document_to_delete)
@@ -112,7 +116,7 @@ class Furnace:
         screen.blit(self._shadow_furnace.surface, (self.xy.x - self._shadow_furnace.radius,  -self._shadow_furnace.radius))
         screen.blit(self._surface_furnace, (self.xy.x, 0))
 
-        screen.blit(font.departure_mono_size_22.render(f"{self.temperature}°C", False, WHITE), (self.xy.x + 4, self.xy.y))
+        screen.blit(font.departure_mono_size_22.render(f"{self.temperature}°C", False, RED), (self.xy.x + 4, self.xy.y))
 
         #pygame.draw.rect(screen, PURPLE, self._rect_furnace)
 

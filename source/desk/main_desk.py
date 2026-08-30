@@ -21,6 +21,7 @@ from fonts import font
 from music import music_player
 from text_funs import render_text_in_the_middle
 from interval_time import previous_times
+import floating_window as floating_window_module
 
 class Desk:
     def __init__(self, display, game_state_manager):
@@ -89,7 +90,7 @@ class Desk:
 
             elif timer_instance.times_up: self._game_lost = "time"
 
-            elif global_dictionary["mistakes"] > 0: self._game_lost = "mistakes"
+            elif global_dictionary["mistakes"] > 3: self._game_lost = "mistakes"
 
             if self._game_lost is not None and not self._game_lost == "high_temperature":
                 if not self._game_lost_dialog_triggered:
@@ -114,7 +115,7 @@ class Desk:
                         if list_of_banned_sins[global_dictionary["days"] - 1] in document_single.sins.keys():
                             global_dictionary["mistakes"] += 1
 
-                if not global_dictionary["mistakes"] > 0: self._day_complete = True
+                if not global_dictionary["mistakes"] > 3: self._day_complete = True
 
             #info # Drawing the GUI #
 
@@ -139,8 +140,10 @@ class Desk:
                     world_instance.draw()
                     timer_instance.draw()
 
-                mini_desk_instance.draw()
+                mini_desk_instance.draw(events, mouse)
                 desk_instance.draw()
+
+                floating_window_module.controls_enabled = not dialogs[global_dictionary["days"] - 1].sylwester_talking
 
                 for floating_window in reversed(floating_windows.copy()): floating_window.draw(events, mouse)
 
@@ -155,6 +158,20 @@ class Desk:
                 pygame.time.wait(3000)
                 previous_times["furnace"] = pygame.time.get_ticks()
                 self._reset_day()
+
+                if global_dictionary["days"] == 7:
+                    while True:
+                        events = pygame.event.get()
+
+                        screen.fill(YELLOW)
+                        text = font.retron_2000_size_108.render(f"THE END", False, WHITE)
+                        render_text_in_the_middle(text, screen, pygame.Vector2(0, 444), screen_width)
+                        pygame.display.flip()
+
+                        for event in events:
+                            if event.type == pygame.QUIT:
+                                pygame.quit()
+                                sys.exit()
 
             elif self._game_lost is not None and not dialog_you_lost.should_draw:
                 screen.fill(RED)
