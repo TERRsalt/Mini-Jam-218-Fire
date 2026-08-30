@@ -3,8 +3,8 @@ from desk.world import SylwesterLook
 
 global_dictionary = {"days": 1, "burned_documents": 0, "mistakes": 0}
 
-documents_to_burn = [15, 21, 25, 30, 50, 50]
-spawned_documents = [5, 7, 10, 15, 20, 25]
+documents_to_burn = [5, 7, 10, 15, 20, 25]
+spawned_documents = [15, 21, 25, 30, 50, 50]
 
 message_1 = [
     "Hi! I'm Sylwester!",
