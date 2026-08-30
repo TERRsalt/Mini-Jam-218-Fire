@@ -13,8 +13,11 @@ class Furnace:
     def __init__(self):
         self.temperature = 666
         self.last_temperature = 666
-        self.planned_temperature = 0
-        self.temperature_change = 0
+
+        self.planned_plus_temperature = 0
+        self.temperature_plus_change = 0
+        self.planned_minus_temperature = 0
+        self.temperature_minus_change = 0
 
         self.width, self.height = 451, screen_height - 444
         self.xy = pygame.Vector2(screen_width - self.width, 0)
@@ -58,14 +61,13 @@ class Furnace:
     def _logic(self, events, mouse, should_temperature_change):
         if interval(500, "furnace"):
             if should_temperature_change:
-                if self.temperature_change == 0:
-                    if self.planned_temperature > 0: self.temperature_change = 1
-                    elif self.planned_temperature < 0: self.temperature_change = -1
+                if self.planned_plus_temperature > 0: self.planned_plus_temperature -= self.temperature_plus_change
+                else: self.temperature_plus_change = 0
 
-                if self.planned_temperature != 0: self.planned_temperature -= self.temperature_change
-                else: self.temperature_change = 0
+                if self.planned_minus_temperature < 0: self.planned_minus_temperature -= self.temperature_minus_change
+                else: self.temperature_minus_change = 0
 
-                self.temperature += self.temperature_change - 1
+                self.temperature += self.temperature_plus_change + self.temperature_minus_change - 1
 
             self._fire_to_choose += 1
             if self._fire_to_choose >= 4: self._fire_to_choose = 0
@@ -73,10 +75,15 @@ class Furnace:
         document_to_delete = None
         for i in range(len(document.documents)):
             if document.documents[i].look.rect.colliderect(self._rect_furnace):
-                self.planned_temperature += document.documents[i].sum_of_sins_and_virtues
+                sum_of_all_sins_and_virtues = document.documents[i].sum_of_sins_and_virtues
 
-                if document.documents[i].sum_of_sins_and_virtues > 0: self.temperature_change += 2
-                else: self.temperature_change -= 5
+                if sum_of_all_sins_and_virtues > 0:
+                    self.planned_plus_temperature += sum_of_all_sins_and_virtues
+                    self.temperature_plus_change += 2
+
+                else:
+                    self.planned_minus_temperature += sum_of_all_sins_and_virtues
+                    self.temperature_minus_change -= 2
 
                 document_to_delete = i
 
@@ -102,8 +109,8 @@ class Furnace:
 
         pygame.draw.rect(screen, PURPLE, self._rect_furnace)
 
-        screen.blit(font.retron_2000_size_27.render(f"Planned: {self.planned_temperature}", False, WHITE), (1600, 200))
-        screen.blit(font.retron_2000_size_27.render(f"Change: {self.temperature_change}", False, WHITE), (1600, 300))
+        screen.blit(font.retron_2000_size_27.render(f"Planned: {self.planned_plus_temperature}, {self.planned_minus_temperature}", False, WHITE), (1600, 200))
+        screen.blit(font.retron_2000_size_27.render(f"Change: {self.temperature_plus_change}, {self.temperature_minus_change}", False, WHITE), (1600, 300))
 
         screen.blit(self._shadow_border.surface, (self.xy.x - 2 - self._shadow_border.radius, self.xy.y - self._shadow_border.radius))
         screen.blit(self._border_surface, (self.xy.x - 2, self.xy.y))
