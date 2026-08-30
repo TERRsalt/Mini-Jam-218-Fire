@@ -5,7 +5,7 @@ from PIL import Image, ImageFilter
 from colors import *
 
 class Shadow:
-    def __init__(self, base_surface, size_of_shadow = 3):
+    def __init__(self, base_surface, size_of_shadow = 3, color = BLACK):
         self._size_of_shadow = size_of_shadow
 
         self.radius = self._size_of_shadow * 3
@@ -15,6 +15,7 @@ class Shadow:
 
         self.surface.blit(base_surface, (self.radius, self.radius))
         self.surface.fill(BLACK, special_flags = pygame.BLEND_RGB_MIN)
+        self.surface.fill(color, special_flags = pygame.BLEND_RGB_ADD)
 
         self._blur()
 

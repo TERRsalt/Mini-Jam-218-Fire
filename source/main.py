@@ -15,7 +15,7 @@ if __name__ == "__main__":
             self.screen = screen
 
             self.gameClassManager = GameClassManager("main_menu")
-            #self.gameClassManager = GameClassManager("desk")
+            self.gameClassManager = GameClassManager("desk")
 
             self.scenes = {}
 

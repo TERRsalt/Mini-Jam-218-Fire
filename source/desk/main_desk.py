@@ -48,7 +48,7 @@ class Desk:
             mini_desk_instance.draw()
             timer_instance.draw()
 
-            dialog_1.draw(events, Voice.SYLWESTER)
+            #dialog_1.draw(events, Voice.SYLWESTER)
 
             desk_instance.draw()
 
