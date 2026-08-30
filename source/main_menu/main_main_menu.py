@@ -3,8 +3,12 @@ import sys
 
 from colors import *
 from debug import debug_menu
-from display import screen
+from display import screen, screen_width
 from clickable import clickables
+from fonts import font
+from main_menu.button import start_the_game, settings, quit_the_game
+from text_funs import render_text_in_the_middle
+from interval_time import interval
 
 class MainMenu:
     def __init__(self, display, game_state_manager):
@@ -15,6 +19,11 @@ class MainMenu:
 
         self.clock = pygame.time.Clock()
         self.fps = int(self.clock.get_fps())
+
+        self._title = font.retron_2000_size_108.render("Welcome to H.E.L.L.", False, WHITE)
+        self._y_for_the_title = 233
+        self._should_title_go_up = False
+        self._should_interval = True
 
     def run(self) -> None:
         self.clock = pygame.time.Clock()
@@ -31,7 +40,22 @@ class MainMenu:
 
             #info # Drawing the GUI #
 
-            screen.fill(WHITE)
+            screen.fill(RED)
+
+            if interval(250, "title") and self._should_interval:
+                if self._should_title_go_up: self._y_for_the_title -= 1
+                else: self._y_for_the_title += 1
+
+                if self._y_for_the_title == 231 or self._y_for_the_title == 235: self._should_title_go_up = not self._should_title_go_up
+
+            elif not interval(250, "title"): self._should_interval = True
+
+            render_text_in_the_middle(self._title, screen, pygame.Vector2(0, self._y_for_the_title), screen_width)
+            render_text_in_the_middle(self._title, screen, pygame.Vector2(0, self._y_for_the_title), screen_width)
+
+            start_the_game.draw(150 + self._y_for_the_title)
+            settings.draw(150 + self._y_for_the_title + 125)
+            quit_the_game.draw(150 + self._y_for_the_title + 125 * 2)
 
             debug_menu.draw(events, f"FPS: {self.fps}")
 

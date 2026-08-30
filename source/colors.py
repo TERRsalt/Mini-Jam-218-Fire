@@ -8,7 +8,6 @@ WHITE = (255,243,225)
 
 TRANSPARENT = (0, 0, 0, 0)
 
-#exp # Colors needed for debugging #
-
 BLACK = (0, 0, 0)
-PURPLE = (128, 0, 255)
+
+PURPLE = (128, 0, 255) #exp # Color needed for debugging #
