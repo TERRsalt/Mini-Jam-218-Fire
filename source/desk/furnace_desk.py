@@ -1,6 +1,7 @@
 import pygame
 
 from colors import *
+from desk.days import global_dictionary
 from display import screen, screen_width, screen_height
 from interval_time import interval
 from fonts import font
@@ -87,7 +88,12 @@ class Furnace:
 
                 document_to_delete = i
 
+                global_dictionary["burned_documents"] += 1
+
+                if document.documents[i].sum_of_sins == 0: global_dictionary["mistakes"] += 1
+
         if document_to_delete is not None:
+            #document.deleted_documents.append(document_to_delete)
             deleted_document = document.documents.pop(document_to_delete)
             if deleted_document.look in floating_windows: floating_windows.remove(deleted_document.look)
 
@@ -107,7 +113,7 @@ class Furnace:
 
         screen.blit(font.departure_mono_size_22.render(f"{self.temperature}°C", False, WHITE), (self.xy.x, self.xy.y))
 
-        pygame.draw.rect(screen, PURPLE, self._rect_furnace)
+        #pygame.draw.rect(screen, PURPLE, self._rect_furnace)
 
         screen.blit(font.retron_2000_size_27.render(f"Planned: {self.planned_plus_temperature}, {self.planned_minus_temperature}", False, WHITE), (1600, 200))
         screen.blit(font.retron_2000_size_27.render(f"Change: {self.temperature_plus_change}, {self.temperature_minus_change}", False, WHITE), (1600, 300))

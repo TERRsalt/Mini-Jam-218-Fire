@@ -3,6 +3,7 @@ import random
 
 from colors import *
 from desk.mini_desk import mini_desk_instance
+from desk.timer import timer_instance
 from desk.world import world_instance
 from display import screen
 from floating_window import FloatingWindow, floating_windows, dragging
@@ -95,6 +96,7 @@ class Document:
             try: sum_of_virtues = sum(self.virtues.values())
             except ValueError: sum_of_virtues = 0
 
+            self.sum_of_sins = sum_of_sins
             self.sum_of_sins_and_virtues = sum_of_sins + sum_of_virtues
             if self.sum_of_sins_and_virtues != 0: break
 
@@ -142,7 +144,8 @@ class Document:
 
                 self._controls(events, mouse)
 
-                if self.rect.colliderect(world_instance.rect_to_fall) and not dragging.currently_dragging:
+                if (self.rect.colliderect(world_instance.rect_to_fall) or self.rect.colliderect(world_instance.rect_on_the_right_to_fall)) \
+                        and not dragging.currently_dragging:
                     self.xy.y += 20
                     self.rect.y += 20
 
@@ -154,12 +157,13 @@ class Document:
 
     def draw(self, events, mouse) -> None: self.look.draw(events, mouse)
 
-documents = []
+documents  = []
 def reset_day() -> None:
     global documents
 
     documents = []
-    for i in range(spawned_documents[day[0] - 1]): documents.append(Document())
+    floating_windows.clear()
+    for i in range(spawned_documents[global_dictionary["days"] - 1]): documents.append(Document())
     _max_height_of_documents = max(document.look.height for document in documents)
     documents.sort(key = lambda document: document.look.height, reverse = False)
     for document in documents:
@@ -172,3 +176,9 @@ def reset_day() -> None:
         document.look.rect.y += random_additional_xy.y
 
         floating_windows.append(document.look)
+
+    global_dictionary["mistakes"] = 0
+    global_dictionary["burned_documents"] = 0
+    timer_instance.time_in_seconds = 5 * 60
+    timer_instance.minutes = 5
+    timer_instance.seconds = 0

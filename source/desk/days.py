@@ -1,8 +1,8 @@
 from desk.dialog import Dialog, Voice
 
-day = [1]
+global_dictionary = {"days": 1, "burned_documents": 0, "mistakes": 0}
 
-documents_to_burn = [10, 15, 20, 25, 30, 35]
+documents_to_burn = [2, 15, 20, 25, 30, 35]
 spawned_documents = [20, 30, 40, 50, 60, 70]
 
 messages = [
@@ -56,14 +56,16 @@ messages = [
     "3 mistakes, before...",
     "...I will come",
     "So good luck in your...",
-    "...new eternal work!"
+    "...new eternal work!",
+
+
 ]
 
 test_message = ["Test"]
 
 dialogs = [
     Dialog(test_message, Voice.SYLWESTER),
-    Dialog(messages[0], Voice.SYLWESTER),
+    Dialog(messages, Voice.SYLWESTER),
     Dialog(messages[0], Voice.SYLWESTER),
     Dialog(messages[0], Voice.SYLWESTER),
     Dialog(messages[0], Voice.SYLWESTER),
