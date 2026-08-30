@@ -5,7 +5,7 @@ from enum import Enum
 from colors import *
 from display import screen
 from fonts import font
-from interval_time import interval
+from interval_time import interval, previous_times
 from shadow import Shadow
 from text_funs import render_text_in_the_middle
 
@@ -43,6 +43,7 @@ class Dialog:
         self._should_dialog_increase_number_of_letters = True
         self.should_draw = True
         self.sylwester_talking = True
+        previous_times["dialog"] = pygame.time.get_ticks()
 
     def _controls(self, events):
         for event in events:
@@ -63,15 +64,18 @@ class Dialog:
         screen.blit(self._dialog_window, (0, 0))
 
         self._controls(events)
-        if not self.should_draw: #minor # Yes, I'm checking it again, because I don't have time to code it properly ^-^ #
+        if not self.should_draw:
             self.sylwester_talking = False
             return
 
         if len(self._full_message[self._message_number]) != self._number_of_letters:
-            if interval(66, "dialog") and self._should_dialog_increase_number_of_letters:
+            should_advance = interval(66, "dialog")
+
+            if should_advance and self._should_dialog_increase_number_of_letters:
                 self._number_of_letters += 1
                 self._should_dialog_increase_number_of_letters = False
-            elif not interval(66, "dialog"): self._should_dialog_increase_number_of_letters = True
+            elif not should_advance:
+                self._should_dialog_increase_number_of_letters = True
 
             if voice == Voice.SYLWESTER and _SYLWESTER_SOUNDS.get_num_channels() == 0: _SYLWESTER_SOUNDS.play()
             elif voice == Voice.PHONE and _PHONE_SOUNDS.get_num_channels() == 0: _PHONE_SOUNDS.play()

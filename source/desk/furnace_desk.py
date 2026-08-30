@@ -115,8 +115,8 @@ class Furnace:
 
         #pygame.draw.rect(screen, PURPLE, self._rect_furnace)
 
-        screen.blit(font.retron_2000_size_27.render(f"Planned: {self.planned_plus_temperature}, {self.planned_minus_temperature}", False, WHITE), (1600, 200))
-        screen.blit(font.retron_2000_size_27.render(f"Change: {self.temperature_plus_change}, {self.temperature_minus_change}", False, WHITE), (1600, 300))
+        #screen.blit(font.retron_2000_size_27.render(f"Planned: {self.planned_plus_temperature}, {self.planned_minus_temperature}", False, WHITE), (1600, 200))
+        #screen.blit(font.retron_2000_size_27.render(f"Change: {self.temperature_plus_change}, {self.temperature_minus_change}", False, WHITE), (1600, 300))
 
         screen.blit(self._shadow_border.surface, (self.xy.x - 2 - self._shadow_border.radius, self.xy.y - self._shadow_border.radius))
         screen.blit(self._border_surface, (self.xy.x - 2, self.xy.y))

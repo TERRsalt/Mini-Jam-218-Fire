@@ -131,7 +131,7 @@ message_6 = [
 test_m = ["Test"]
 
 dialogs = [
-    Dialog(test_m, Voice.SYLWESTER),
+    Dialog(message_1, Voice.SYLWESTER),
     Dialog(message_2, Voice.PHONE),
     Dialog(message_3, Voice.PHONE),
     Dialog(message_4, Voice.PHONE),

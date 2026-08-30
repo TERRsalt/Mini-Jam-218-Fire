@@ -155,7 +155,14 @@ class Desk:
                 text = font.retron_2000_size_108.render("You lost", False, WHITE)
                 render_text_in_the_middle(text, screen, pygame.Vector2(0, 444), screen_width)
 
+                if self._game_lost == "low_temperature": why_you_lost = "(due to too low temperature)"
+                elif self._game_lost == "high_temperature": why_you_lost = "(due to too high temperature)"
+                elif self._game_lost == "time": why_you_lost = "(due to the time running out)"
+                elif self._game_lost == "mistakes": why_you_lost = "(due to too too many mistakes)"
+                else: why_you_lost = ""
 
+                text = font.retron_2000_size_54.render(why_you_lost, False, WHITE)
+                render_text_in_the_middle(text, screen, pygame.Vector2(0, 666), screen_width)
 
                 self._day_complete = False
                 self._game_lost = None

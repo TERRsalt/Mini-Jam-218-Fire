@@ -191,7 +191,7 @@ class Document:
                 text_xy = pygame.Vector2(4, 25)
 
                 self._surface.blit(font.departure_mono_size_22.render(self._parent.name, False, RED), text_xy)
-                self._surface.blit(font.departure_mono_size_22.render(f"{self._parent.sum_of_sins_and_virtues}", False, RED), (200, text_xy.y))
+                #self._surface.blit(font.departure_mono_size_22.render(f"{self._parent.sum_of_sins_and_virtues}", False, RED), (200, text_xy.y))
                 text_xy.y += 22
 
                 if len(self._parent.sins) != 0:
