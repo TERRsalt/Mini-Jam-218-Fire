@@ -17,6 +17,7 @@ from desk.furnace_desk import furnace
 from desk.desk_desk import desk_instance
 from desk.days import *
 from fonts import font
+from music import music_player
 from text_funs import render_text_in_the_middle
 from interval_time import previous_times
 
@@ -30,7 +31,9 @@ class Desk:
         self.clock = pygame.time.Clock()
         self.fps = int(self.clock.get_fps())
 
-        #info # Stuff for the days #
+        #info # Stuff for the days and etc. #
+
+        self._explosion_sound = pygame.mixer.Sound("assets/sfx/explosion.wav")
 
         self._game_lost = None
         self._day_complete = False
@@ -39,6 +42,8 @@ class Desk:
 
         self._number_of_burned_documents = 0
 
+        self._game_lost_dialog_triggered = False
+
         reset_day()
         self._win_condition_checked = False
         timer_instance.seconds -= 3
@@ -46,12 +51,15 @@ class Desk:
 
     def _reset_day(self):
         reset_day()
+
         furnace.temperature = 666
         furnace.temperature_plus_change = 0
         furnace.temperature_minus_change = 0
         furnace.planned_minus_temperature = 0
         furnace.planned_plus_temperature = 0
+
         self._win_condition_checked = False
+        self._game_lost_dialog_triggered = False
 
     def run(self) -> None:
         self.clock = pygame.time.Clock()
@@ -66,6 +74,8 @@ class Desk:
 
             clickables.clickables = []
 
+            music_player.play_random_music(events)
+
             #minor # Losing the game #
 
             if furnace.temperature < 555: self._game_lost = "low_temperature"
@@ -74,6 +84,13 @@ class Desk:
             elif timer_instance.times_up: self._game_lost = "time"
 
             elif global_dictionary["mistakes"] > 0: self._game_lost = "mistakes"
+
+            if self._game_lost is not None and not self._game_lost == "high_temperature":
+                if not self._game_lost_dialog_triggered:
+                    dialog_you_lost.reset()
+                    self._game_lost_dialog_triggered = True
+
+            elif self._game_lost == "high_temperature" and self._explosion_sound.get_num_channels() == 0: self._explosion_sound.play()
 
             #minor # Wining the game #
 
@@ -95,9 +112,8 @@ class Desk:
 
             #info # Drawing the GUI #
 
-            if self._game_lost is None and not self._day_complete:
+            if (self._game_lost is None or dialog_you_lost.should_draw) and not self._day_complete:
                 screen.fill(WHITE)
-
                 heaven.draw()
 
                 if dialogs[global_dictionary["days"] - 1].sylwester_talking:
@@ -105,6 +121,13 @@ class Desk:
                     world_instance.draw(world_sylwester[global_dictionary["days"] - 1])
                     dialogs[global_dictionary["days"] - 1].draw(events, Voice.SYLWESTER)
                     timer_instance.draw(False)
+                elif dialog_you_lost.should_draw:
+                    furnace.draw(events, mouse, False)
+                    world_instance.draw(SylwesterLook.DEVIL)
+                    dialog_you_lost.draw(events, Voice.SYLWESTER)
+                    timer_instance.draw(False)
+
+                    if not dialog_you_lost.sylwester_talking: dialog_you_lost.should_draw = False
                 else:
                     furnace.draw(events, mouse)
                     world_instance.draw()
@@ -115,7 +138,7 @@ class Desk:
 
                 for floating_window in reversed(floating_windows.copy()): floating_window.draw(events, mouse)
 
-            elif self._day_complete:
+            elif self._day_complete and not dialog_you_lost.should_draw:
                 screen.fill(YELLOW)
                 text = font.retron_2000_size_108.render(f"Day {global_dictionary["days"]} complete", False, WHITE)
                 render_text_in_the_middle(text, screen, pygame.Vector2(0, 444), screen_width)
@@ -127,10 +150,13 @@ class Desk:
                 previous_times["furnace"] = pygame.time.get_ticks()
                 self._reset_day()
 
-            elif self._game_lost is not None:
+            elif self._game_lost is not None and not dialog_you_lost.should_draw:
                 screen.fill(RED)
-                text = font.retron_2000_size_108.render(f"You lost {self._game_lost}", False, WHITE)
+                text = font.retron_2000_size_108.render("You lost", False, WHITE)
                 render_text_in_the_middle(text, screen, pygame.Vector2(0, 444), screen_width)
+
+
+
                 self._day_complete = False
                 self._game_lost = None
                 pygame.display.flip()

@@ -3,6 +3,7 @@ import random
 
 from colors import *
 from desk.mini_desk import mini_desk_instance
+from desk.names import *
 from desk.timer import timer_instance
 from desk.world import world_instance
 from display import screen
@@ -13,7 +14,7 @@ from fonts import font
 from colors import *
 from desk.days import *
 
-#info # These were made up by the AI #
+#info # These (2 dictionaries) were made up by the AI #
 
 DICTIONARY_OF_ALL_SINS = {
     # Tiny, everyday sins (common)
@@ -136,7 +137,7 @@ _DOCUMENT_TOP = pygame.image.load("assets/gfx/document_top.png").convert_alpha()
 
 class Document:
     def __init__(self):
-        self.name = "Ron Random"
+        self.name = names[random.randint(0, names_length - 1)]
 
         #info # Sins and virtues #
 

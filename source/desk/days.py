@@ -165,3 +165,8 @@ dialogs_sylwester = [
     Voice.PHONE,
     SylwesterLook.SYLWESTER
 ]
+
+message_you_lost = ["You are fired"]
+
+dialog_you_lost = Dialog(message_you_lost, Voice.SYLWESTER)
+dialog_you_lost.should_draw = False

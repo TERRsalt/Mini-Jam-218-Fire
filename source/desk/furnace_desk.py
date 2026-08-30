@@ -6,7 +6,7 @@ from display import screen, screen_width, screen_height
 from interval_time import interval
 from fonts import font
 from shadow import Shadow
-from floating_window import floating_windows
+from floating_window import floating_windows, dragging
 
 import desk.document as document
 
@@ -75,7 +75,7 @@ class Furnace:
 
         document_to_delete = None
         for i in range(len(document.documents)):
-            if document.documents[i].look.rect.colliderect(self._rect_furnace):
+            if document.documents[i].look.rect.colliderect(self._rect_furnace) and not dragging.currently_dragging:
                 sum_of_all_sins_and_virtues = document.documents[i].sum_of_sins_and_virtues
 
                 if sum_of_all_sins_and_virtues > 0:

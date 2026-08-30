@@ -37,6 +37,13 @@ class Dialog:
 
         self.sylwester_talking = True
 
+    def reset(self):
+        self._message_number = 0
+        self._number_of_letters = 0
+        self._should_dialog_increase_number_of_letters = True
+        self.should_draw = True
+        self.sylwester_talking = True
+
     def _controls(self, events):
         for event in events:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:

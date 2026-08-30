@@ -21,6 +21,9 @@ class World:
         self._image_sylwester = pygame.image.load("assets/gfx/sylwester.png").convert_alpha()
         self._shadow_sylwester = Shadow(self._image_sylwester)
 
+        self._image_devil = pygame.image.load("assets/gfx/devil.png").convert_alpha()
+        self._shadow_devil = Shadow(self._image_devil)
+
         self._image_desk = pygame.image.load("assets/gfx/desk.png").convert_alpha()
         self._shadow_desk = Shadow(self._image_desk)
         self._phone = pygame.image.load("assets/gfx/phone.png").convert_alpha()
@@ -35,8 +38,8 @@ class World:
             screen.blit(self._shadow_sylwester.surface, (-self._shadow_sylwester.radius, -self._shadow_sylwester.radius))
             screen.blit(self._image_sylwester, (0, 0))
         elif sylwester == SylwesterLook.DEVIL:
-            screen.blit(self._shadow_sylwester.surface, (-self._shadow_sylwester.radius, -self._shadow_sylwester.radius))
-            screen.blit(self._image_sylwester, (0, 0))
+            screen.blit(self._shadow_devil.surface, (-self._shadow_devil.radius, -self._shadow_devil.radius))
+            screen.blit(self._image_devil, (0, 0))
 
         screen.blit(self._shadow_desk.surface, (-self._shadow_desk.radius, -self._shadow_desk.radius))
         screen.blit(self._image_desk, (0, 0))
