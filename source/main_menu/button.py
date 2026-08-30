@@ -1,6 +1,7 @@
 import pygame
 
-from display import screen, screen_width
+from display import screen
+from settings import screen_width
 from colors import *
 from fonts import font
 from text_funs import render_text_in_the_middle
@@ -19,8 +20,9 @@ class Button:
         self._text = font.retron_2000_size_54.render(text, False, WHITE)
         render_text_in_the_middle(self._text, self._surface, pygame.Vector2(0, 47), self._width)
 
-    def draw(self, y):
+    def draw(self, y) -> None:
         screen.blit(self._surface, (self._xy.x, y))
+        self.rect = pygame.Rect(self._xy.x, y, self._width, self._height)
 
 start_the_game = Button("Start the game")
 settings = Button("Settings")

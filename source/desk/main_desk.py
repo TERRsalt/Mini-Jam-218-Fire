@@ -8,7 +8,8 @@ from desk.timer import timer_instance
 from desk.world import world_instance, SylwesterLook
 from colors import *
 from debug import debug_menu
-from display import screen, screen_width
+from display import screen
+from settings import screen_width
 from clickable import clickables
 from desk.document import reset_day
 import desk.document as document
@@ -43,6 +44,11 @@ class Desk:
         self._number_of_burned_documents = 0
 
         self._game_lost_dialog_triggered = False
+
+        current_time = pygame.time.get_ticks()
+        previous_times["furnace"] = current_time
+        previous_times["dialog"] = current_time
+        previous_times["timer"] = current_time
 
         reset_day()
         self._win_condition_checked = False

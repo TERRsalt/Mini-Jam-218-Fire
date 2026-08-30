@@ -2,7 +2,7 @@ import pygame
 
 from colors import *
 from clickable import clickables
-from display import screen_width, screen_height
+from settings import screen_width, screen_height
 
 #info # `Dragging` #
 

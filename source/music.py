@@ -9,6 +9,7 @@ class Music:
         self.should_play = True
 
         pygame.mixer.music.load(f"{self.music_folder}/{starting_music}")
+        pygame.mixer.music.set_volume(1.0)
         pygame.mixer.music.play()
 
         self.MUSIC_END_EVENT = pygame.USEREVENT + 100

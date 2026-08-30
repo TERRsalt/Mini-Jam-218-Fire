@@ -1,7 +1,8 @@
 import pygame
 
 from colors import *
-from display import screen, screen_height
+from display import screen
+from settings import screen_height
 from shadow import Shadow
 
 from desk.world import world_instance

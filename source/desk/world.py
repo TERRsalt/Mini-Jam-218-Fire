@@ -4,7 +4,8 @@ import pygame
 from enum import Enum
 
 from colors import *
-from display import screen, screen_width
+from display import screen
+from settings import screen_width
 from settings import screen_height
 from shadow import Shadow
 

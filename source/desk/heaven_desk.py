@@ -1,7 +1,8 @@
 import pygame
 
 from colors import *
-from display import screen, screen_width, screen_height
+from display import screen
+from settings import screen_width, screen_height
 from fonts import font
 from shadow import Shadow
 

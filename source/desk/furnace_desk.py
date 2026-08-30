@@ -2,7 +2,8 @@ import pygame
 
 from colors import *
 from desk.days import global_dictionary
-from display import screen, screen_width, screen_height
+from display import screen
+from settings import screen_width, screen_height
 from interval_time import interval
 from fonts import font
 from shadow import Shadow

@@ -3,17 +3,20 @@ import sys
 
 from colors import *
 from debug import debug_menu
-from display import screen, screen_width
+from display import screen
+from settings import screen_width
 from clickable import clickables
 from fonts import font
 from main_menu.button import start_the_game, settings, quit_the_game
 from text_funs import render_text_in_the_middle
 from interval_time import interval
+from music import music_player
+from main_menu.settings_main_menu import settings_menu
 
 class MainMenu:
     def __init__(self, display, game_state_manager):
         self.display = display
-        self.gameStateManager = game_state_manager
+        self.game_state_manager = game_state_manager
 
         self.game_running = True
 
@@ -38,6 +41,8 @@ class MainMenu:
 
             clickables.clickables = []
 
+            music_player.play_random_music(events)
+
             #info # Drawing the GUI #
 
             screen.fill(RED)
@@ -57,17 +62,36 @@ class MainMenu:
             settings.draw(150 + self._y_for_the_title + 125)
             quit_the_game.draw(150 + self._y_for_the_title + 125 * 2)
 
+            settings_menu.draw(events, mouse)
+
             debug_menu.draw(events, f"FPS: {self.fps}")
 
             #info # Controls #
 
             for event in events:
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
+                if event.type == pygame.QUIT: self._quit_the_game()
+
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if start_the_game.rect.collidepoint(mouse): clickables.add(10, lambda: self._change_scene_to_desk(), "click")
+
+                    elif settings.rect.collidepoint(mouse): clickables.add(10, lambda: self._settings_menu_method(), "click")
+
+                    elif quit_the_game.rect.collidepoint(mouse): clickables.add(10, lambda: self._quit_the_game(), "click")
 
             clickables.process_clickables()
 
             #info # Rendering stuff onto the screen #
 
             pygame.display.flip()
+
+    def _change_scene_to_desk(self):
+        self.game_running = False
+        self.game_state_manager.current_class = "desk"
+
+    @staticmethod
+    def _settings_menu_method(): settings_menu.should_draw = not settings_menu.should_draw
+
+    @staticmethod
+    def _quit_the_game():
+        pygame.quit()
+        sys.exit()
